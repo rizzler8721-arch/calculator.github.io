@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Grid</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      color: #222;
+    }
+    .container {
+      max-width: 980px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(140px, 1fr));
+      gap: 20px;
+    }
+    .tile {
+      display: block;
+      text-decoration: none;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      color: #222;
+    }
+    .tile:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    }
+    .tile img {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .tile-title {
+      display: block;
+      padding: 10px 12px 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: #222;
+    }
+    .section {
+      margin-top: 40px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      display: none;
+    }
+    .section:target {
+      display: block;
+    }
+    h2 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="text-align: center; font-size: 48px; margin-bottom: 10px;">Welcome to the site</h1>
+    <p style="text-align: center; font-size: 18px; color: #e74c3c; font-weight: bold; margin-top: 0; margin-bottom: 30px;">beta testing DO NOT SHARE YOUR CODE</p>
+    <div class="grid">
+      <a class="tile" href="1.12.html" title="Mine craft"><img src="minecraft.jpg" alt="Section 1" /></a>
+      <a class="tile" href="baldisbasics.html" title="baldi's basics"><img src="Baldisbasics.webp" alt="Section 2" /></a>
+      <a class="tile" href="cookieclicker.htm" title="cookie clicker"><img src="cookieclicker.avif" alt="Section 3" /></a>
+
+      <a class="tile" href="eggycar.html" title="eggy car"><img src="EggyCar.jpg" alt="Section 4" /></a>
+      <a class="tile" href="driftboss.htm" title="drift boss"><img src="driftboss.jpeg" alt="Section 5" /></a>
+      <a class="tile" href="crossyroad.html" title="crossy road"><img src="crossyroad.webp" alt="Section 6" /></a>
+
+      <a class="tile" href="geometrydashlite.html" title="geometry dash lite"><img src="geometrydash.jpg" alt="Section 7" /></a>
+      <a class="tile" href="fnaf.html" title="fnaf"><img src="Fnaf.avif" alt="Section 8" /></a>
+      <a class="tile" href="doodlejump.html" title="doodle jump"><img src="doodlejump.jpeg" alt="Section 9" /></a>
+
+      <a class="tile" href="crazycattle3D.html" title="crazy Cattle 3D"><img src="cc3d.jpeg" alt="Section 10" /></a>
+      <a class="tile" href="granny.html" title="granny"><img src="granny.webp" alt="Section 11" /></a>
+      <a class="tile" href="jetpackjoyride.html" title="jetpack joyride"><img src="jetpackjoyride.jpeg" alt="Section 12" /></a>
+
+      <a class="tile" href="motox3m.htm" title="moto x3m"><img src="motox3m.jpeg" alt="Section 13" /></a>
+      <a class="tile" href="badpiggies.html" title="bad piggies"><img src="badpiggies.jpg" alt="Section 14" /></a>
+      <a class="tile" href="angrybirds.html" title="angry birds"><img src="angrybirds.jpeg" alt="Section 15" /></a>
+    </div>
+
+    <section id="section-1" class="section">
+      <h2>Section 1</h2>
+      <p>Welcome to the first area of the site.</p>
+    </section>
+    <section id="section-2" class="section">
+      <h2>Section 2</h2>
+      <p>Explore another part of the site.</p>
+    </section>
+    <section id="section-3" class="section">
+      <h2>Section 3</h2>
+      <p>More content is just a click away.</p>
+    </section>
+    <section id="section-4" class="section">
+      <h2>Section 4</h2>
+      <p>Each image links to a different section.</p>
+    </section>
+    <section id="section-5" class="section">
+      <h2>Section 5</h2>
+      <p>Keep browsing through the site.</p>
+    </section>
+    <section id="section-6" class="section">
+      <h2>Section 6</h2>
+      <p>Navigation made simple with image tiles.</p>
+    </section>
+    <section id="section-7" class="section">
+      <h2>Section 7</h2>
+      <p>More areas are available below.</p>
+    </section>
+    <section id="section-8" class="section">
+      <h2>Section 8</h2>
+      <p>Each tile acts as a shortcut.</p>
+    </section>
+    <section id="section-9" class="section">
+      <h2>Section 9</h2>
+      <p>Jump to a different content area.</p>
+    </section>
+    <section id="section-10" class="section">
+      <h2>Section 10</h2>
+      <p>Another destination in the same site.</p>
+    </section>
+    <section id="section-11" class="section">
+      <h2>Section 11</h2>
+      <p>Easy access to the rest of the experience.</p>
+    </section>
+    <section id="section-12" class="section">
+      <h2>Section 12</h2>
+      <p>Clarity and quick navigation.</p>
+    </section>
+    <section id="section-13" class="section">
+      <h2>Section 13</h2>
+      <p>Built for smooth site exploration.</p>
+    </section>
+    <section id="section-14" class="section">
+      <h2>Section 14</h2>
+      <p>Choose your route through the content.</p>
+    </section>
+    <section id="section-15" class="section">
+      <h2>Section 15</h2>
+      <p>End of the grid, but not the site.</p>
+    </section>
+  </div>
+</body>
+</html>
