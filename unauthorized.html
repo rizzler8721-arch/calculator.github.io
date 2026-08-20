@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Required</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #a792df 0%, #61449b 100%);
+        }
+        .card {
+            background: white;
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 320px;
+        }
+        .display-area {
+            border-bottom: 2px solid #333333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+        }
+        h3 {
+            margin: 0;
+            color: #4a4a4a;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+        .message-text {
+            color: #f46e6e;
+            font-size: 1em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #72d572;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(114, 213, 114, 0.3);
+        }
+        button:hover {
+            background: #5fc45f;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="display-area">
+        <h3>Key Required</h3>
+    </div>
+    <div class="message-text">Please enter your key before attempting to access this page.</div>
+    <button onclick="goBack()">Go back</button>
+</div>
+
+<script>
+function goBack() {
+    window.location.href = "key.html";
+}
+</script>
+
+</body>
+</html>

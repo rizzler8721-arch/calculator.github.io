@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link's calculator</title>
+    <title>Verification Required</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -27,12 +27,7 @@
             margin-bottom: 25px;
             padding-bottom: 15px;
         }
-        h3 {
-            margin: 0;
-            color: #4a4a4a;
-            font-size: 1.3em;
-            font-weight: 500;
-        }
+        h3 { margin: 0; color: #4a4a4a; font-size: 1.3em; font-weight: 500; }
         input {
             width: 90%;
             padding: 14px;
@@ -47,10 +42,7 @@
             letter-spacing: 1px;
             outline: none;
         }
-        input::placeholder {
-            color: #a0a5ba;
-            font-weight: normal;
-        }
+        input::placeholder { color: #a0a5ba; font-weight: normal; }
         button {
             width: 99%;
             padding: 14px;
@@ -64,18 +56,9 @@
             transition: background 0.2s ease, transform 0.1s ease;
             box-shadow: 0 4px 10px rgba(114, 213, 114, 0.3);
         }
-        button:hover {
-            background: #5fc45f;
-        }
-        button:active {
-            transform: scale(0.98);
-        }
-        #error {
-            color: #f46e6e;
-            margin-top: 15px;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
+        button:hover { background: #5fc45f; }
+        button:disabled { background: #cccccc; cursor: not-allowed; box-shadow: none; }
+        #error { color: #f46e6e; margin-top: 15px; font-size: 0.9em; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -85,23 +68,36 @@
         <h3>Verification Required</h3>
     </div>
     <input type="text" id="keyInput" placeholder="Enter 20-character key" maxlength="20">
-    <button onclick="checkKey()">Verify & Enter</button>
+    <button id="submitBtn" onclick="checkKey()">Verify & Enter</button>
     <div id="error"></div>
 </div>
 
 <script>
-function checkKey() {
+// !!! PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE !!!
+const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwydA2cepBSpZGxO_826D7aHutuLuDw1TmqXtyyAeF_SnJ2-yJ-s_EtwLHbT7n-FTTs/exec";
+
+// Generates or reads a hardware tracking token unique to this browser installation profile
+function getOrCreateHardwareId() {
+    let hid = localStorage.getItem('device_hardware_fingerprint');
+    if (!hid) {
+        hid = 'HID-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem('device_hardware_fingerprint', hid);
+    }
+    return hid;
+}
+
+async function checkKey() {
     const key = document.getElementById('keyInput').value.trim();
     const errorDiv = document.getElementById('error');
+    const btn = document.getElementById('submitBtn');
     errorDiv.innerText = "";
 
-    // 1. Enforce strict character length requirements
+    // 1. Structural Validation Checks (Prevent unnecessary database pings)
     if (key.length !== 20) {
         errorDiv.innerText = "son😭😭😭.";
         return;
     }
 
-    // 2. Reject key instantly if ANY identical characters sit side-by-side
     for (let i = 0; i < key.length - 1; i++) {
         if (key.charAt(i) === key.charAt(i + 1)) {
             errorDiv.innerText = "son😭😭😭";
@@ -109,7 +105,6 @@ function checkKey() {
         }
     }
 
-    // 3. Extract hidden 4-digit date block (indices 7 to 10)
     const dateBlock = key.substring(7, 11);
     if (isNaN(dateBlock) || dateBlock.length !== 4) {
         errorDiv.innerText = "son😭😭😭";
@@ -118,57 +113,70 @@ function checkKey() {
 
     const yearDigit = parseInt(dateBlock.charAt(0));
     const dayOfYear = parseInt(dateBlock.substring(1, 4));
-
-    // 4. Sanity check for valid calendar days
     if (dayOfYear < 1 || dayOfYear > 366) {
         errorDiv.innerText = "son😭😭😭";
         return;
     }
 
-    // 5. Reconstruct the real target expiration date safely resolving modulo collisions
     const now = new Date();
     now.setHours(0, 0, 0, 0);
     const currentYear = now.getFullYear();
-    
     let candidateDates = [];
 
-    // Check custom offsets from -1 year to +10 years to find all years ending in our digit
     for (let offset = -1; offset <= 10; offset++) {
         let testYear = currentYear + offset;
         if (testYear % 10 === yearDigit) {
-            // Reconstruct the exact date for this candidate year matching generator logic
-            let testDate = new Date(testYear, 0, 0); // Starting bound anchor
+            let testDate = new Date(testYear, 0, 0); 
             testDate.setDate(testDate.getDate() + dayOfYear);
             testDate.setHours(0, 0, 0, 0);
             candidateDates.push(testDate);
         }
     }
 
-    // Pick the correct date: Prefer the future date if one exists; otherwise fall back to past
     let expiryDate = null;
     if (candidateDates.length > 0) {
-        // Sort dates chronologically
         candidateDates.sort((a, b) => a - b);
-        
-        // Find the first option that expires today or in the future
         expiryDate = candidateDates.find(date => date >= now);
-        
-        // Default to the last available candidate if all are historical (truly expired keys)
         if (!expiryDate) {
             expiryDate = candidateDates[candidateDates.length - 1];
         }
     }
 
-    if (!expiryDate) {
-        errorDiv.innerText = "son😭😭😭";
+    if (!expiryDate || now > expiryDate) {
+        errorDiv.innerText = "key has expired";
         return;
     }
 
-    // 6. Final verification boundary check
-    if (now > expiryDate) {
-        errorDiv.innerText = "key has expired";
-    } else {
-        window.location.href = "site.html";
+    // 2. CENTRAL DATA AUDIT LAYER
+    const hardwareId = getOrCreateHardwareId();
+    btn.disabled = true;
+    errorDiv.style.color = "#556ee6";
+    errorDiv.innerText = "Checking secure database...";
+
+    try {
+        const response = await fetch(GOOGLE_API_URL, {
+            method: "POST",
+            mode: "cors",
+            headers: { "Content-Type": "text/plain" }, // Avoids CORS flight trigger issues with Apps Script
+            body: JSON.stringify({ key: key, hardwareId: hardwareId })
+        });
+        
+        const result = await response.json();
+        errorDiv.style.color = "#f46e6e";
+
+        if (result.status === "SUCCESS") {
+            // Commit key locally to link this session configuration setup
+            localStorage.setItem('assigned_license_key', key);
+            document.cookie = "session_handshake_auth=" + btoa(key) + "; path=/; SameSite=Strict";
+            window.location.href = "site.html";
+        } else {
+            errorDiv.innerText = result.message; // Displays error if already locked to another machine
+            btn.disabled = false;
+        }
+    } catch (err) {
+        errorDiv.style.color = "#f46e6e";
+        errorDiv.innerText = "Database connection error. Try again.";
+        btn.disabled = false;
     }
 }
 </script>
