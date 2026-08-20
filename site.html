@@ -3,18 +3,32 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Image Grid</title>
+    <title>Link's Calculator</title>
     <script>
         // PHASE 1 SECURITY: Run instantly before building any layout architecture
         (function() {
+            // Read hardware bounding fingerprints and saved key properties
             const identityKey = localStorage.getItem('assigned_license_key');
             const hardwareId = localStorage.getItem('device_hardware_fingerprint');
             
-            // Read and decode active browser cookies
-            const cookies = document.cookie.split(';');
-            let activeHandshakeToken = "";
+            // Read the clean short term session token string out of sessionStorage
+            const activeHandshakeToken = sessionStorage.getItem('session_handshake_auth');
 
-            for (let i = 0; i 
+            // FALLBACK CONTEXT AUDIT: Check if the browser arrived directly from local activation forms
+            const allowedReferrer = "key.html";
+            const currentReferrer = document.referrer.toLowerCase();
+            const freshRedirect = currentReferrer.includes(allowedReferrer) || currentReferrer.includes("rizzler8721.github.io");
+
+            // CRITICAL SYSTEM INTEGRITY AUDIT:
+            // Allow entry if state keys match local memory pools, OR if a fresh gateway form transfer occurred
+            const identityMatched = (identityKey && hardwareId && activeHandshakeToken === identityKey);
+            
+            if (!identityMatched && !freshRedirect) {
+                // Instantly push bookmarks or link shared bypass tricks to unauthorized.html
+                window.location.replace("unauthorized.html");
+            }
+        })();
+    </script>
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; font-family: Arial, sans-serif; background: #f3f3f3; color: #222; }

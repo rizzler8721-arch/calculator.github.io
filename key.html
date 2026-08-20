@@ -74,7 +74,7 @@
 
 <script>
 // !!! PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE !!!
-const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwydA2cepBSpZGxO_826D7aHutuLuDw1TmqXtyyAeF_SnJ2-yJ-s_EtwLHbT7n-FTTs/exec";
+const GOOGLE_API_URL = "YOUR_DEPLOYED_WEB_APP_URL_HERE";
 
 // Generates or reads a hardware tracking token unique to this browser installation profile
 function getOrCreateHardwareId() {
@@ -92,7 +92,7 @@ async function checkKey() {
     const btn = document.getElementById('submitBtn');
     errorDiv.innerText = "";
 
-    // 1. Structural Validation Checks (Prevent unnecessary database pings)
+    // 1. Structural Validation Checks
     if (key.length !== 20) {
         errorDiv.innerText = "son😭😭😭.";
         return;
@@ -147,7 +147,7 @@ async function checkKey() {
         return;
     }
 
-    // 2. CENTRAL DATA AUDIT LAYER
+    // 2. Database Connection Audit Layer
     const hardwareId = getOrCreateHardwareId();
     btn.disabled = true;
     errorDiv.style.color = "#556ee6";
@@ -157,7 +157,7 @@ async function checkKey() {
         const response = await fetch(GOOGLE_API_URL, {
             method: "POST",
             mode: "cors",
-            headers: { "Content-Type": "text/plain" }, // Avoids CORS flight trigger issues with Apps Script
+            headers: { "Content-Type": "text/plain" },
             body: JSON.stringify({ key: key, hardwareId: hardwareId })
         });
         
@@ -165,12 +165,15 @@ async function checkKey() {
         errorDiv.style.color = "#f46e6e";
 
         if (result.status === "SUCCESS") {
-            // Commit key locally to link this session configuration setup
+            // Commit key locally to bind device profile state rules
             localStorage.setItem('assigned_license_key', key);
-            document.cookie = "session_handshake_auth=" + btoa(key) + "; path=/; SameSite=Strict";
+            
+            // Write short term authorization ticket to sessionStorage to fix GitHub Pages suffix limits
+            sessionStorage.setItem('session_handshake_auth', key);
+            
             window.location.href = "site.html";
         } else {
-            errorDiv.innerText = result.message; // Displays error if already locked to another machine
+            errorDiv.innerText = result.message;
             btn.disabled = false;
         }
     } catch (err) {
