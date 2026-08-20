@@ -7,7 +7,6 @@
     <script>
         // PHASE 1 SECURITY: Run instantly before building any layout architecture
         (function() {
-            // Read the permanent key and device registration token stored locally
             const identityKey = localStorage.getItem('assigned_license_key');
             const hardwareId = localStorage.getItem('device_hardware_fingerprint');
             
