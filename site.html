@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Image Grid</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -21,6 +23,16 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(140px, 1fr));
       gap: 20px;
+    }
+    .search {
+      display: block;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto 30px;
+      padding: 12px 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
     }
     .tile {
       display: block;
@@ -70,26 +82,31 @@
   <div class="container">
     <h1 style="text-align: center; font-size: 48px; margin-bottom: 10px;">Welcome to the site</h1>
     <p style="text-align: center; font-size: 18px; color: #e74c3c; font-weight: bold; margin-top: 0; margin-bottom: 30px;">beta testing DO NOT SHARE YOUR CODE</p>
+    
+    <input class="search" type="search" placeholder="Search lessons..." aria-label="Search lessons" />
+    
     <div class="grid">
-      <a class="tile" href="1.12.html" title="Mine craft"><img src="minecraft.jpg" alt="Section 1" /></a>
-      <a class="tile" href="baldisbasics.html" title="baldi's basics"><img src="Baldisbasics.webp" alt="Section 2" /></a>
+      <a class="tile" href="1.12.html" title="Mine craft" data-lessons="minecraft"><img src="minecraft.jpg" alt="Minecraft" /></a>
+      <a class="tile" href="baldisbasics.html" title="baldi's basics" data-lessons="baldi's basics"><img src="Baldisbasics.webp" alt="Baldi's Basics" /></a>
       <a class="tile" href="cookieclicker.htm" title="cookie clicker"><img src="cookieclicker.avif" alt="Section 3" /></a>
-
       <a class="tile" href="eggycar.html" title="eggy car"><img src="EggyCar.jpg" alt="Section 4" /></a>
       <a class="tile" href="driftboss.htm" title="drift boss"><img src="driftboss.jpeg" alt="Section 5" /></a>
       <a class="tile" href="crossyroad.html" title="crossy road"><img src="crossyroad.webp" alt="Section 6" /></a>
-
       <a class="tile" href="geometrydashlite.html" title="geometry dash lite"><img src="geometrydash.jpg" alt="Section 7" /></a>
       <a class="tile" href="fnaf.html" title="fnaf"><img src="Fnaf.avif" alt="Section 8" /></a>
       <a class="tile" href="doodlejump.html" title="doodle jump"><img src="doodlejump.jpeg" alt="Section 9" /></a>
-
       <a class="tile" href="crazycattle3D.html" title="crazy Cattle 3D"><img src="cc3d.jpeg" alt="Section 10" /></a>
       <a class="tile" href="granny.html" title="granny"><img src="granny.webp" alt="Section 11" /></a>
       <a class="tile" href="jetpackjoyride.html" title="jetpack joyride"><img src="jetpackjoyride.jpeg" alt="Section 12" /></a>
-
       <a class="tile" href="motox3m.htm" title="moto x3m"><img src="motox3m.jpeg" alt="Section 13" /></a>
       <a class="tile" href="badpiggies.html" title="bad piggies"><img src="badpiggies.jpg" alt="Section 14" /></a>
       <a class="tile" href="angrybirds.html" title="angry birds"><img src="angrybirds.jpeg" alt="Section 15" /></a>
+      <a class="tile" href="deltarune.html" title="deltarune"><img src="deltarune.jpg" alt="Section 13" /></a>
+      <a class="tile" href="tetris.html" title="tetris"><img src="tetris.png" alt="Section 14" /></a>
+      <a class="tile" href="drivemad.htm" title="drive mad"><img src="drivemad.png" alt="Section 15" /></a>
+      <a class="tile" href="Fnaf2.html" title="fnaf 2"><img src="Fnaf2.jpg" alt="Section 13" /></a>
+      <a class="tile" href="flappybird.html" title="flappy bird"><img src="flappybird.jpeg" alt="Section 14" /></a>
+      <a class="tile" href="fruitninja.html" title="fruit ninja"><img src="fruitninja.jpeg" alt="Section 15" /></a>
     </div>
 
     <section id="section-1" class="section">
@@ -153,5 +170,37 @@
       <p>End of the grid, but not the site.</p>
     </section>
   </div>
+
+  <script>
+    const search = document.querySelector('.search');
+    const tiles = document.querySelectorAll('.tile');
+
+    function filterTiles() {
+      const query = search.value.trim().toLowerCase();
+
+      tiles.forEach(tile => {
+        const name = [
+          tile.dataset.lessons,
+          tile.getAttribute('title'),
+          tile.querySelector('img')?.alt
+        ].filter(Boolean).join(' ').toLowerCase();
+
+        const isMatch = name.includes(query);
+
+        if (query === '') {
+          tile.style.display = 'block';
+          tile.style.order = '0';
+        } else if (isMatch) {
+          tile.style.display = 'block';
+          tile.style.order = '-1';
+        } else {
+          tile.style.display = 'none';
+          tile.style.order = '0';
+        }
+      });
+    }
+
+    search.addEventListener('input', filterTiles);
+  </script>
 </body>
 </html>

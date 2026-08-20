@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link's calculator</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            background: linear-gradient(135deg, #a792df 0%, #61449b 100%); 
+        }
+        
+        .card { 
+            background: white; 
+            padding: 35px 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); 
+            text-align: center; 
+            width: 320px; 
+        }
+
+        .display-area {
+            border-bottom: 2px solid #333333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            margin: 0;
+            color: #4a4a4a;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+
+        input { 
+            width: 90%; 
+            padding: 14px; 
+            font-size: 1.1em; 
+            text-align: center; 
+            margin-bottom: 15px; 
+            border: none;
+            background-color: #f3f4f9;
+            color: #556ee6;
+            border-radius: 8px; 
+            font-weight: bold;
+            letter-spacing: 1px;
+            outline: none;
+        }
+        
+        input::placeholder {
+            color: #a0a5ba;
+            font-weight: normal;
+        }
+
+        button { 
+            width: 99%; 
+            padding: 14px; 
+            background: #72d572; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: background 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(114, 213, 114, 0.3);
+        }
+
+        button:hover { 
+            background: #5fc45f; 
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #error { 
+            color: #f46e6e; 
+            margin-top: 15px; 
+            font-size: 0.9em; 
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="display-area">
+            <h3>Verification Required</h3>
+        </div>
+        
+        <input type="text" id="keyInput" placeholder="Enter 20-character key" maxlength="20">
+        <button onclick="checkKey()">Verify & Enter</button>
+        
+        <div id="error"></div>
+    </div>
+
+    <script>
+        function checkKey() {
+            const key = document.getElementById('keyInput').value.trim();
+            const errorDiv = document.getElementById('error');
+            errorDiv.innerText = "";
+
+            // 1. Enforce strict character structure requirements
+            if (key.length !== 20) {
+                errorDiv.innerText = "son😭😭😭.";
+                return;
+            }
+
+            // 2. Reject key instantly if ANY identical characters sit side-by-side
+            for (let i = 0; i < key.length - 1; i++) {
+                if (key.charAt(i) === key.charAt(i + 1)) {
+                    errorDiv.innerText = "son😭😭😭";
+                    return;
+                }
+            }
+
+            // 3. Extract the hidden 4-digit date block from indices 7 through 10
+            const dateBlock = key.substring(7, 11);
+            if (isNaN(dateBlock)) {
+                errorDiv.innerText = "son😭😭😭";
+                return;
+            }
+
+            const yearDigit = parseInt(dateBlock.charAt(0));
+            const dayOfYear = parseInt(dateBlock.substring(1, 4));
+
+            // 4. Sanity check for valid calendar dates (max 366 days in a year)
+            if (dayOfYear < 1 || dayOfYear > 366) {
+                errorDiv.innerText = "son😭😭😭";
+                return;
+            }
+
+            // 5. Reconstruct the real target expiration date
+            const currentYear = new Date().getFullYear();
+            let expiryYear = currentYear;
+            
+            while (expiryYear % 10 !== yearDigit) {
+                expiryYear++;
+            }
+
+            const expiryDate = new Date(expiryYear, 0);
+            expiryDate.setDate(dayOfYear);
+
+            const now = new Date();
+            now.setHours(0,0,0,0);
+            expiryDate.setHours(0,0,0,0);
+
+            // 6. Compare times
+            if (now > expiryDate) {
+                errorDiv.innerText = "key has expired";
+            } else {
+                window.location.href = "site.html";
+            }
+        }
+    </script>
+</body>
+</html>
